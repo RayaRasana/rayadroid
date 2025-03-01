@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="locale"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/editor_toolbar"
+        layout="@layout/toolbar_actionbar_editor" />
+
+    <dts.rayafile.com.ui.editor.widget.HorizontalEditScrollView
+        android:id="@+id/scroll_edit"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <dts.rayafile.com.ui.editor.widget.EditScrollView
+        android:id="@+id/edit_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/blue_bg"
+        android:fillViewport="true">
+
+        <com.yydcdut.markdown.MarkdownEditText
+            android:id="@+id/edit_md"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/blue_bg"
+            android:gravity="start|top"
+            android:padding="16dp"
+            android:textColor="@color/white" />
+    </dts.rayafile.com.ui.editor.widget.EditScrollView>
+
+
+</LinearLayout>
