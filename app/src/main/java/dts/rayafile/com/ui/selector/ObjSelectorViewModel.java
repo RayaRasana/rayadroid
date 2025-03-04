@@ -24,6 +24,7 @@ import dts.rayafile.com.framework.util.Objs;
 import dts.rayafile.com.framework.util.SLogs;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -53,11 +54,41 @@ public class ObjSelectorViewModel extends BaseViewModel {
         });
     }
 
+    public List<Account> getAccounts(){
+        return SupportAccountManager.getInstance().getSignedInAccountList();
+    }
 
     public void loadAccount() {
         List<Account> list = SupportAccountManager.getInstance().getSignedInAccountList();
         getObjsListLiveData().setValue(new ArrayList<>(list));
         getRefreshLiveData().setValue(false);
+    }
+
+    public void getReposFromNet(Account account, boolean isFilterUnavailable, Consumer<List<RepoModel>> callback) {
+        Single<RepoWrapperModel> single = HttpIO.getInstanceByAccount(account)
+                .execute(RepoService.class)
+                .getReposAsync();
+
+        addSingleDisposable(single, repoWrapperModel -> {
+            if (repoWrapperModel == null || CollectionUtils.isEmpty(repoWrapperModel.repos)) {
+                getObjsListLiveData().setValue(null);
+                getRefreshLiveData().setValue(false);
+                callback.accept(Collections.emptyList());  // Return empty list if no data
+                return;
+            }
+            List<RepoModel> list1 = Objs.convertRemoteListToLocalList(repoWrapperModel.repos, account.getSignature());
+            List<BaseModel> list2 = Objs.convertToAdapterList(list1, isFilterUnavailable);
+            getObjsListLiveData().setValue(list2);
+            getRefreshLiveData().setValue(false);
+
+            callback.accept(list1);  // Return list1 via callback
+        }, new Consumer<Throwable>() {
+            @Override
+            public void accept(Throwable throwable) throws Exception {
+                SLogs.d(throwable.getMessage());
+                callback.accept(Collections.emptyList()); // Return empty list on error
+            }
+        });
     }
 
     /**

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.blankj.utilcode.util.CollectionUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter4.QuickAdapterHelper;
 import com.github.panpf.recycler.sticky.StickyItemDecoration;
 import dts.rayafile.com.R;
@@ -65,7 +66,6 @@ public class ObjSelectorFragment extends BaseFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         if (getArguments() == null) {
             canChooseAccount = true;
         } else {

@@ -2,6 +2,7 @@ package dts.rayafile.com.ui.selector;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter4.QuickAdapterHelper;
 import com.github.panpf.recycler.sticky.StickyItemDecoration;
+import com.google.gson.Gson;
+
 import dts.rayafile.com.R;
 import dts.rayafile.com.account.Account;
 import dts.rayafile.com.account.SupportAccountManager;
@@ -31,6 +34,7 @@ import dts.rayafile.com.framework.data.db.entities.EncKeyCacheEntity;
 import dts.rayafile.com.framework.data.db.entities.PermissionEntity;
 import dts.rayafile.com.framework.data.db.entities.RepoModel;
 import dts.rayafile.com.framework.data.model.BaseModel;
+import dts.rayafile.com.preferences.SharedPreferencesHelper;
 import dts.rayafile.com.ui.base.BaseActivity;
 import dts.rayafile.com.ui.dialog_fragment.NewDirFileDialogFragment;
 import dts.rayafile.com.ui.dialog_fragment.PasswordDialogFragment;
@@ -40,6 +44,8 @@ import dts.rayafile.com.ui.repo.RepoQuickAdapter;
 import dts.rayafile.com.view.TipsViews;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import io.reactivex.functions.Consumer;
 
@@ -59,13 +65,20 @@ public class ObjSelectorActivity extends BaseActivity {
     public static final String DATA_DIRECTORY_PATH = "dirPath";
     public static final String DATA_DIR = "dir";
 
+    public static final String PREF_ACCOUNT_DATA = "share_account_server";
+    public static final String PREF_LIBRARY_DATA = "share_library";
+    public static final String PREF_FOLDER_DATA = "share_folder";
+
+
+    private final SharedPreferences sharedPreferences = SharedPreferencesHelper.getSharedPreferences(null);
+
 
     private boolean canChooseAccount;
     private boolean isOnlyChooseRepo;
 
     private ActivitySelectorObjBinding binding;
     private final NavContext mNavContext = new NavContext();
-
+    private Gson gson;
     private RepoQuickAdapter adapter;
     private ObjSelectorViewModel viewModel;
     private Account mAccount;
@@ -79,7 +92,7 @@ public class ObjSelectorActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        gson = new Gson();
         binding = ActivitySelectorObjBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -124,7 +137,7 @@ public class ObjSelectorActivity extends BaseActivity {
     }
 
     private void initView() {
-        binding.swipeRefreshLayout.setOnRefreshListener(this::loadData);
+        binding.swipeRefreshLayout.setOnRefreshListener(() -> loadData(null));
 
         if (isOnlyChooseRepo) {
             binding.ok.setVisibility(View.GONE);
@@ -161,7 +174,7 @@ public class ObjSelectorActivity extends BaseActivity {
             binding.newFolder.setEnabled(false);
         }
 
-        loadData();
+        loadData("true");
     }
 
     private void onOkClick() {
@@ -228,20 +241,25 @@ public class ObjSelectorActivity extends BaseActivity {
     }
 
     private void onItemClick(BaseModel baseModel) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
         if (baseModel instanceof Account) {
-
             mAccount = (Account) baseModel;
-            mStep = STEP_CHOOSE_REPO;
-            loadData();
-        } else if (baseModel instanceof RepoModel) {
+            editor.putString(PREF_ACCOUNT_DATA, mAccount.server);
+            editor.apply();
 
+            mStep = STEP_CHOOSE_REPO;
+            loadData(null);
+        } else if (baseModel instanceof RepoModel) {
             RepoModel repoModel = (RepoModel) baseModel;
+            editor.putString(PREF_LIBRARY_DATA, gson.toJson(repoModel));
+            editor.apply();
+
             if (repoModel.encrypted) {
                 doEncrypt(repoModel);
             } else {
                 mStep = STEP_CHOOSE_DIR;
                 mNavContext.push(repoModel);
-                loadData();
+                loadData(null);
             }
 
         } else if (baseModel instanceof DirentModel) {
@@ -249,9 +267,11 @@ public class ObjSelectorActivity extends BaseActivity {
             if (!model.isDir()) {
                 return;
             }
+            editor.putString(PREF_FOLDER_DATA, gson.toJson(model));
+            editor.apply();
 
             mNavContext.push(model);
-            loadData();
+            loadData(null);
         }
 
 
@@ -267,7 +287,7 @@ public class ObjSelectorActivity extends BaseActivity {
                 } else if (now < encKeyCacheEntity.expire_time_long) {
                     mStep = STEP_CHOOSE_DIR;
                     mNavContext.push(repoModel);
-                    loadData();
+                    loadData(null);
                 } else {
                     showPasswordDialog(repoModel);
                 }
@@ -282,7 +302,7 @@ public class ObjSelectorActivity extends BaseActivity {
             public void onResultData(RepoModel uRepoModel) {
                 mStep = STEP_CHOOSE_DIR;
                 mNavContext.push(repoModel);
-                loadData();
+                loadData(null);
             }
         });
 
@@ -344,7 +364,7 @@ public class ObjSelectorActivity extends BaseActivity {
                 @Override
                 public void onActionStatus(boolean isDone) {
                     if (isDone) {
-                        loadData();
+                        loadData(null);
                     }
                 }
             });
@@ -352,13 +372,56 @@ public class ObjSelectorActivity extends BaseActivity {
         });
     }
 
-    private void loadData() {
+    private void clearShareServer() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_ACCOUNT_DATA, null);
+        editor.apply();
+    }
+
+    private void clearShareLibrary() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_LIBRARY_DATA, null);
+        editor.apply();
+    }
+
+    private void clearShareFolder() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(PREF_FOLDER_DATA, null);
+        editor.apply();
+    }
+
+    private void loadData(String firstInit) {
         // update action bar
         ActionBar bar = getSupportActionBar();
         if (bar == null) {
             return;
         }
+        if (Objects.equals(firstInit, "true")) {
+            String server = sharedPreferences.getString(PREF_ACCOUNT_DATA, null);
+            String library = sharedPreferences.getString(PREF_LIBRARY_DATA, null);
+            String folder = sharedPreferences.getString(PREF_FOLDER_DATA, null);
 
+            if (server != null) {
+                Optional<Account> result = viewModel.getAccounts().stream()
+                        .filter(item -> Objects.equals(item.server, server))
+                        .findFirst();
+                result.ifPresent(account -> mAccount = account);
+                mStep = STEP_CHOOSE_REPO;
+                if (library != null) {
+                    RepoModel repoModel = gson.fromJson(library, RepoModel.class);
+                    mNavContext.push(repoModel);
+                    if (folder != null) {
+                        mStep = STEP_CHOOSE_DIR;
+                        DirentModel direntModel = gson.fromJson(folder, DirentModel.class);
+                        mNavContext.push(direntModel);
+                    }
+                } else {
+                    mStep = STEP_CHOOSE_REPO;
+                }
+            } else {
+                mStep = STEP_CHOOSE_ACCOUNT;
+            }
+        }
         if (mStep == STEP_CHOOSE_ACCOUNT) {
 
             bar.setDisplayHomeAsUpEnabled(false);
@@ -416,8 +479,9 @@ public class ObjSelectorActivity extends BaseActivity {
             break;
             case STEP_CHOOSE_REPO: {
                 if (canChooseAccount) {
+                    clearShareServer();
                     mStep = STEP_CHOOSE_ACCOUNT;
-                    loadData();
+                    loadData(null);
                 } else {
                     setResult(RESULT_CANCELED);
                     finish();
@@ -426,11 +490,13 @@ public class ObjSelectorActivity extends BaseActivity {
             break;
             case STEP_CHOOSE_DIR: {
                 if (mNavContext.inRepoRoot()) {
+                    clearShareFolder();
+                    clearShareLibrary();
                     mStep = STEP_CHOOSE_REPO;
                 } else {
                     mNavContext.pop();
                 }
-                loadData();
+                loadData(null);
             }
             break;
         }
