@@ -4,7 +4,7 @@
 
     <GridView
         android:id="@+id/cuc_bucket_selection_grid"
-        android:layoutDirection="locale"
+        android:layoutDirection="rtl"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="150dp"

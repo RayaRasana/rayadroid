@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/search_bar"
-    android:layoutDirection="locale"
+    android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -32,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_marginEnd="8dip"
         android:layout_weight="1"
-        android:layoutDirection="locale"
+        android:layoutDirection="rtl"
         android:orientation="horizontal">
 
         <ImageView

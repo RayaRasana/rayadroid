@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/bar_background_color"
     android:clipChildren="false"
-    android:layoutDirection="locale"
+    android:layoutDirection="rtl"
     android:fitsSystemWindows="false">
 
     <androidx.viewpager2.widget.ViewPager2
