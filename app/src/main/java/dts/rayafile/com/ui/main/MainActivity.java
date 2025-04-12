@@ -85,6 +85,21 @@ import kotlin.Pair;
 
 public class MainActivity extends BaseActivity {
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale locale = new Locale("fa");
+        Locale.setDefault(locale);
+
+        Configuration config = newBase.getResources().getConfiguration();
+        config.setLocale(locale);
+        config.setLayoutDirection(locale);
+
+        Context context = newBase.createConfigurationContext(config);
+        super.attachBaseContext(context);
+    }
+
+
     public static final int INDEX_LIBRARY_TAB = 0;
     private int last_orientation;
 
@@ -106,7 +121,6 @@ public class MainActivity extends BaseActivity {
         return prefs.getString(getString(R.string.settings_language), "fa"); // Default to "en" if no language is saved
     }
     private void initAppLocale(){
-//        String l = getSavedLanguage(this);
         String l = "fa";
         Locale locale = new Locale(l);
         Locale.setDefault(locale);
