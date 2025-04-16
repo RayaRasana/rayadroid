@@ -24,10 +24,12 @@
     <color name="fancy_gray">#969696</color>
     <color name="fancy_dark_gray">#e1e2e3</color>
 
-    <color name="fancy_orange_light">#FFC783</color> <!-- theme color -->
-    <color name="fancy_orange">#ea8201</color> <!-- theme color -->
-    <color name="fancy_orange_dark">#CF7300</color> <!-- theme color -->
-    <color name="fancy_orange_translucent">#44ea8201</color> <!-- theme color -->
+    <!-- theme color -->
+
+    <color name="fancy_orange_light">#D88E81</color>         <!-- Darker coral pink -->
+    <color name="fancy_orange">#7FB3D1</color>              <!-- Darker sky blue -->
+    <color name="fancy_orange_dark">#A9BED2</color>         <!-- Darker mist blue -->
+    <color name="fancy_orange_translucent">#447FB3D1</color> <!-- Translucent blue -->
 
     <!-- Material Theme -->
 

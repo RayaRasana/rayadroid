@@ -34,6 +34,8 @@ import dts.rayafile.com.account.SupportAccountManager;
 import dts.rayafile.com.config.Constants;
 import dts.rayafile.com.ui.account.adapter.AccountAdapter;
 import dts.rayafile.com.ui.main.MainActivity;
+import dts.rayafile.com.ui.account.AccountDetailActivity;
+
 
 import java.util.List;
 import java.util.Locale;
@@ -94,14 +96,21 @@ public class AccountsActivity extends BaseActivityWithVM<AccountViewModel> imple
         View footerView = getLayoutInflater().inflate(R.layout.account_list_footer, null, false);
 
         Button addAccount = (Button) footerView.findViewById(R.id.account_footer_btn);
-        addAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View btn) {
-                mAccountManager.addAccount(Constants.Account.ACCOUNT_TYPE,
-                        Authenticator.AUTHTOKEN_TYPE, null, null,
-                        AccountsActivity.this, accountCallback, null);
+            addAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View btn) {
+                    Intent intent = new Intent(AccountsActivity.this, AccountDetailActivity.class);
+                    startActivity(intent);
             }
         });
+//        addAccount.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View btn) {
+//                mAccountManager.addAccount(Constants.Account.ACCOUNT_TYPE,
+//                        Authenticator.AUTHTOKEN_TYPE, null, null,
+//                        AccountsActivity.this, accountCallback, null);
+//            }
+//        });
 
         accountsView = (ListView) findViewById(R.id.account_list_view);
         accountsView.addFooterView(footerView, null, true);
