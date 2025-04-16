@@ -143,24 +143,17 @@ public class SeafileAuthenticatorActivity extends BaseAuthenticatorActivity {
             }
             activityLauncher.launch(intent);
         }
-        // Automatically launch "Other Seafile Server" login screen with pre-filled URL
-        Intent launchIntent = new Intent(SeafileAuthenticatorActivity.this, AccountDetailActivity.class);
-        launchIntent.putExtras(getIntent());
-        launchIntent.putExtra(SeafileAuthenticatorActivity.ARG_SERVER_URI, "https://cloud.RayaFile.com");
-        activityLauncher.launch(launchIntent);
-        finish();
-        return;
 
-       // Toolbar toolbar = getActionBarToolbar();
-       // setSupportActionBar(toolbar);
-       // getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // getSupportActionBar().setTitle(R.string.choose_server);
-       // toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-       //     @Override
-       //     public void onClick(View view) {
-        //        navigateUpOrBack(SeafileAuthenticatorActivity.this, null);
-        //    }
-       // });
+        Toolbar toolbar = getActionBarToolbar();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.choose_server);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigateUpOrBack(SeafileAuthenticatorActivity.this, null);
+            }
+        });
     }
 
     /**
