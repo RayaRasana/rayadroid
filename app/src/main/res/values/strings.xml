@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name" translatable="false">RayaFile</string>
+    <string name="app_name" translatable="false">رایافایل</string>
     <string name="app_url" translatable="false">http://Rayarasana.com</string>
     <string name="welcome_to_rayafile">به رایافایل خوش آمدید</string>
     <string name="select_account">یک حساب کاربری را برای شروع انتخاب کنید</string>

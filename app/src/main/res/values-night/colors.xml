@@ -23,8 +23,8 @@
     </color> <!-- color for dividers inside of slide expandable list item -->
     <color name="fancy_gray">#969696</color>
     <color name="fancy_dark_gray">#e1e2e3</color>
-    <color name="fancy_orange">#7FB3D1</color> <!-- theme color -->
-    <color name="fancy_orange_dark">#A9BED2</color> <!-- theme color -->
+    <color name="fancy_orange">#ea8201</color> <!-- theme color -->
+    <color name="fancy_orange_dark">#CF7300</color> <!-- theme color -->
 
     <!-- Material Theme -->
     <color name="md_theme_primary">@color/fancy_orange</color>

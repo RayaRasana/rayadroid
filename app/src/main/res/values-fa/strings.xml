@@ -364,7 +364,7 @@
     <string name="settings_camera_upload_videos_allowed">ویدیوها شامل می‌شوند</string>
     <string name="settings_camera_upload_change_repo_title">تغییر گروه آپلود</string>
     <string name="settings_camera_upload_repo_hint">لطفاً ابتدا یک گروه انتخاب کنید</string>
-    <string name="settings_camera_upload_turn_on">فعال کردن آپلود دوربین</string>
+    <string name="settings_camera_upload_turn_on">فعال کردن آپلود عکس‌های دوربین</string>
     <string name="settings_camera_upload_choose_dir">تغییر آلبوم‌ها</string>
     <string name="settings_camera_upload_dir_auto_scan">پیش‌فرض اسکن خودکار عکس‌ها</string>
     <string name="settings_camera_upload_lib_not_found">گروه انتخاب شده وجود ندارد</string>
@@ -602,7 +602,7 @@
 
     <!--Folder backup Preference-->
     <string name="settings_folder_backup_info_title">پشتیبان‌گیری از پوشه</string>
-    <string name="settings_folder_backup_switch_title">فعال کردن پشتیبان‌گیری پوشه</string>
+    <string name="settings_folder_backup_switch_title">فعال کردن بکاپ آپ گیری از گوشی</string>
     <string name="settings_folder_backup_service_started">سرویس پشتیبان‌گیری شروع شد</string>
     <string name="settings_folder_backup_service_stopped">سرویس پشتیبان‌گیری متوقف شد</string>
     <string name="settings_select_backup_folder_title">انتخاب پوشه</string>
@@ -623,7 +623,7 @@
     <string name="folder_backup_add">افزودن پوشه پشتیبان‌گیری</string>
     <string name="folder_backup_cancel">لغو پشتیبان‌گیری</string>
     <string name="folder_backup_waiting_state">انجام شد</string>
-    <string name="folder_backup_state">اطلاعات پشتیبان‌گیری پوشه</string>
+    <string name="folder_backup_state">وضعیت بکاپ آپ گیری از گوشی</string>
     <string name="folder_backup_mode">WIFI یا اینترنت موبایل</string>
     <string name="folder_backup_mode_title">یک حالت را انتخاب کنید</string>
     <string name="folder_backup_select_repo_hint">انتخاب یک گروه</string>
