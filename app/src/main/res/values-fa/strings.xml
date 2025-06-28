@@ -16,7 +16,7 @@
     <string name="delete_successful">با موفقیت حذف شد</string>
     <string name="delete_repo_title">حذف گروه</string>
     <string name="delete_file_f">حذف فایل</string>
-    <string name="delete_local_file_sametime">فایل‌های محلی را همزمان حذف کنید</string>
+    <string name="delete_local_file_sametime">آیا نسخه داخل گوشی نیز پاک شود؟</string>
     <string name="recover_library">بازیابی گروه</string>
     <string name="recover_file">بازیابی فایل</string>
     <string name="move_file">انتقال فایل</string>
